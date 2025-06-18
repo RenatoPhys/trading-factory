@@ -1,0 +1,52 @@
+{
+    "symbol": "WDO@N",
+    "timeframe": "t5",
+    "data_ini": "2019-01-01",
+    "data_fim": "2025-12-31",
+    "initial_cash": 30000,
+    "lote": 1,
+    "slippage": 0,
+    "daytrade": true,
+    "path_base": "C:/Users/User/OneDrive/Documentos/rnt/Finance/Trading Projects/00.database/candlestick data/futuros/",
+    "num_trials": 51,
+    "max_workers": 1,
+    "export_dir": "./resultados",
+    "tc": 1.2,
+    "valor_lote": 10.0,
+    "param_ranges": {
+        "tp": [
+            2.0,
+            32.0,
+            0.1
+        ],
+        "sl": [
+            2.0,
+            32.0,
+            0.1
+        ],
+        "length_rsi": [
+            6,
+            10,
+            1
+        ],
+        "rsi_low": [
+            25,
+            45,
+            1
+        ],
+        "rsi_high": [
+            55,
+            85,
+            1
+        ],
+        "position_type": [
+            "long",
+            "short",
+            "both"
+        ]
+    },
+    "fixed_params": {},
+    "strategy": "pattern_rsi_trend",
+    "optimize_metric": "sortino_ratio",
+    "direction": "maximize"
+}

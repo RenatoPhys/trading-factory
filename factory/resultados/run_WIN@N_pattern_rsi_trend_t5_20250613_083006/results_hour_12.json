@@ -1,0 +1,28 @@
+{
+    "hour": 12,
+    "best_params": {
+        "length_rsi": 7.0,
+        "rsi_low": 31.0,
+        "rsi_high": 64.0,
+        "position_type": "long",
+        "allowed_hours": [
+            12
+        ],
+        "tp": 1584.8000000000002,
+        "sl": 427.20000000000005
+    },
+    "best_value": 1.8136643006296527,
+    "raw_best_value": 1.8136643006296527,
+    "optimize_metric": "sharpe_ratio",
+    "direction": "maximize",
+    "metrics": {
+        "sortino_ratio": 5.881879163052331,
+        "sharpe_ratio": 1.8136643006296527,
+        "calmar_ratio": 1.6384479689673894,
+        "profit_factor": 1.337614708014931,
+        "win_rate": 0.441566645609602,
+        "max_drawdown": 0.1855945424796368,
+        "total_return": 41701.48000000062,
+        "trades": 1583
+    }
+}

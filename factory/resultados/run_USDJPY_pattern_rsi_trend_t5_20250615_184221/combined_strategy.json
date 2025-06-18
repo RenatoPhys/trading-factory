@@ -1,0 +1,27 @@
+{
+    "symbol": "USDJPY",
+    "timeframe": "t5",
+    "strategy": "pattern_rsi_trend",
+    "hours": [
+        10
+    ],
+    "hour_params": {
+        "10": {
+            "length_rsi": 10.0,
+            "rsi_low": 43.0,
+            "rsi_high": 78.0,
+            "position_type": "short",
+            "allowed_hours": [
+                10
+            ],
+            "tp": 0.11167844977477497,
+            "sl": 0.08047345059268057
+        }
+    },
+    "tc": 3,
+    "lote": 1,
+    "valor_lote": 100000,
+    "daytrade": false,
+    "optimize_metric": "sharpe_ratio",
+    "direction": "maximize"
+}
