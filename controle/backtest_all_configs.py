@@ -399,8 +399,8 @@ def main():
     # Configurações
     STRATEGIES_DIR = "."  # Diretório onde estão os JSONs
     OUTPUT_DIR = "/backtest_results"  # Diretório de saída
-    DATA_INI = "2024-01-01"  # Data inicial do backtest
-    DATA_FIM = "2024-12-31"  # Data final do backtest
+    DATA_INI = "2025-06-01"  # Data inicial do backtest
+    DATA_FIM = "2025-12-31"  # Data final do backtest
     
     # Criar diretório de saída se não existir
     os.makedirs(OUTPUT_DIR, exist_ok=True)
