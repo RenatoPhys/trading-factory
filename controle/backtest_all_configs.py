@@ -299,11 +299,13 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
     timeframe = strategy_data['timeframe']
     hours = strategy_data['hours']
     hour_params = strategy_data['hour_params']
+    magic_number = strategy_data.get('magic_number', 'NO_MAGIC')  # Pegar magic_number ou usar padrão
     
     print(f"Símbolo: {symbol}")
     print(f"Timeframe: {timeframe}")
     print(f"Horas ativas: {hours}")
     print(f"Estratégia: {strategy_data['strategy']}")
+    print(f"Magic Number: {magic_number}")
     
     # Dicionário para armazenar resultados de cada hora
     all_results = {}
@@ -331,18 +333,7 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
                 # Armazenar resultados
                 all_results[hour] = results
                 
-                # Salvar CSV individual para esta hora
-                #hour_csv_filename = f"{symbol}_{timeframe}_{strategy_data['strategy']}_hour_{hour:02d}.csv"
-                #hour_csv_path = os.path.join(output_dir, hour_csv_filename)
-                #hour_csv_path = hour_csv_filename
-                
-                # Selecionar apenas colunas relevantes
-                #columns_to_save = ['open', 'high', 'low', 'close', 'position', 'status_trade', 
-                #                   'pts_final', 'strategy', 'cstrategy', 'equity']
-                
-                #results_to_save = results[columns_to_save].copy()
-                #results_to_save.to_csv(hour_csv_path)
-                #print(f"CSV da hora {hour:02d} salvo em: {hour_csv_path}")
+                print(f"Backtest da hora {hour:02d} concluído com sucesso")
                 
             except Exception as e:
                 print(f"Erro ao processar hora {hour}: {str(e)}")
@@ -379,10 +370,9 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
         combined_df['cstrategy'] = combined_df['strategy'].cumsum()
         combined_df['equity'] = 30000 + combined_df['cstrategy']  # Initial cash = 30000
         
-        # Salvar CSV combinado
-        combined_csv_filename = f"{symbol}_{timeframe}_{strategy_data['strategy']}_combined.csv"
-        #combined_csv_path = os.path.join(output_dir, combined_csv_filename)
-        combined_csv_path = combined_csv_filename
+        # Salvar CSV combinado com magic_number no nome
+        combined_csv_filename = f"{symbol}_{timeframe}_{strategy_data['strategy']}_magic_{magic_number}_combined.csv"
+        combined_csv_path = os.path.join(output_dir, combined_csv_filename)
         combined_df.to_csv(combined_csv_path)
         
         print(f"\nCSV combinado salvo em: {combined_csv_path}")
@@ -397,34 +387,27 @@ def main():
     Função principal que processa todos os arquivos JSON de estratégias
     """
     # Configurações
-    STRATEGIES_DIR = "."  # Diretório onde estão os JSONs
-    OUTPUT_DIR = "/backtest_results"  # Diretório de saída
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))  # Diretório do script atual
+    OUTPUT_DIR = os.path.join(SCRIPT_DIR, "backtest_results")  # Pasta backtest_results no mesmo diretório
     DATA_INI = "2025-06-01"  # Data inicial do backtest
     DATA_FIM = "2025-12-31"  # Data final do backtest
     
     # Criar diretório de saída se não existir
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
-    # Criar subdiretório com timestamp
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    run_output_dir = os.path.join(OUTPUT_DIR, f"run_{timestamp}")
-    os.makedirs(run_output_dir, exist_ok=True)
-    
     print(f"Iniciando processamento de estratégias...")
-    print(f"Diretório de estratégias: {STRATEGIES_DIR}")
-    print(f"Diretório de saída: {run_output_dir}")
+    print(f"Diretório do script: {SCRIPT_DIR}")
+    print(f"Diretório de saída: {OUTPUT_DIR}")
     print(f"Período de backtest: {DATA_INI} a {DATA_FIM}")
     
-    # Buscar todos os arquivos .json
-    pattern = os.path.join(STRATEGIES_DIR, "**/*.json")
-    json_files = glob.glob(pattern, recursive=True)
+    # Buscar arquivos .json apenas no diretório do script (não recursivo)
+    json_files = glob.glob(os.path.join(SCRIPT_DIR, "*.json"))
     
     # Filtrar apenas arquivos combined_strategy.json ou outros arquivos de estratégia relevantes
-    # Você pode ajustar este filtro conforme necessário
     strategy_files = []
     for json_file in json_files:
         # Aceitar combined_strategy.json ou qualquer arquivo que contenha hour_params
-        if 'combined_strategy.json' in json_file:
+        if 'combined_strategy' in os.path.basename(json_file):
             strategy_files.append(json_file)
         else:
             # Verificar se o arquivo contém a estrutura esperada
@@ -437,40 +420,51 @@ def main():
                 continue
     
     if not strategy_files:
-        print(f"\nNenhum arquivo de estratégia válido encontrado em {STRATEGIES_DIR}")
+        print(f"\nNenhum arquivo de estratégia válido encontrado em {SCRIPT_DIR}")
+        print("Arquivos JSON encontrados:")
+        for json_file in json_files:
+            print(f"  - {os.path.basename(json_file)}")
         return
     
-    print(f"\nEncontrados {len(strategy_files)} arquivos de estratégia válidos")
+    print(f"\nEncontrados {len(strategy_files)} arquivos de estratégia válidos:")
+    for file in strategy_files:
+        print(f"  - {os.path.basename(file)}")
     
     # Processar cada arquivo JSON
     for json_file in strategy_files:
         try:
-            # Criar subdiretório para esta estratégia
-            # Usar o nome do arquivo JSON sem extensão como nome do diretório
-            json_filename = os.path.splitext(os.path.basename(json_file))[0]
-            parent_dir = os.path.basename(os.path.dirname(json_file))
-            strategy_output_dir = os.path.join(run_output_dir, f"{parent_dir}_{json_filename}")
-            os.makedirs(strategy_output_dir, exist_ok=True)
+            print(f"\n{'='*60}")
+            print(f"Processando: {os.path.basename(json_file)}")
             
-            print(f"\nProcessando: {json_file}")
-            
-            # Processar estratégia
+            # Processar estratégia - todos os CSVs vão para OUTPUT_DIR
             process_combined_strategy(
                 json_path=json_file,
                 data_ini=DATA_INI,
                 data_fim=DATA_FIM,
-                output_dir=strategy_output_dir
+                output_dir=OUTPUT_DIR
             )
             
         except Exception as e:
-            print(f"\nErro ao processar {json_file}: {str(e)}")
+            print(f"\nErro ao processar {os.path.basename(json_file)}: {str(e)}")
             import traceback
             traceback.print_exc()
             continue
     
-    print(f"\n{'='*50}")
+    print(f"\n{'='*60}")
     print("Processamento concluído!")
-    print(f"Resultados salvos em: {run_output_dir}")
+    print(f"Todos os CSVs foram salvos em: {OUTPUT_DIR}")
+    
+    # Listar arquivos gerados
+    if os.path.exists(OUTPUT_DIR):
+        csv_files = [f for f in os.listdir(OUTPUT_DIR) if f.endswith('.csv')]
+        if csv_files:
+            print(f"\nArquivos CSV gerados ({len(csv_files)}):")
+            for csv_file in sorted(csv_files):
+                print(f"  - {csv_file}")
+        else:
+            print("\nNenhum arquivo CSV foi gerado.")
+    else:
+        print(f"\nDiretório {OUTPUT_DIR} não foi criado.")
 
 if __name__ == "__main__":
     main()
