@@ -1,5 +1,5 @@
 """
-Script para monitorar todos os arquivos .json no diretório
+Script para monitorar todos os arquivos .json no diretório atual
 e gerar arquivos .csv com os resultados de trading do MT5
 """
 
@@ -222,9 +222,12 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
     result_df = process_trades_data(dfmt5, magic_number, cost_per_lot, timeframe)
     
     if not result_df.empty:
+        # Criar diretório se não existir
+        os.makedirs("real_results", exist_ok=True)
+        
         # Para o nome do arquivo, usar apenas WIN se for contrato WIN
         file_symbol = "WIN" if "*WIN*" in symbol else symbol.replace('*', '')
-        output_file = f"real_results/results_{file_symbol}_{timeframe}_{strategy_name}_magic_{magic_number}.csv"
+        output_file = f"controle/real_results/results_{file_symbol}_{timeframe}_{strategy_name}_magic_{magic_number}.csv"
         result_df.to_csv(output_file, index=True)
         print(f"Resultados salvos em: {output_file}")
     
@@ -235,94 +238,107 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
 ###   Funções do Monitor      ###
 #################################
 
-def find_json_configs(directory='.', pattern='*.json'):
-    """Encontra todos os arquivos .json no diretório especificado"""
-    try:
-        search_path = os.path.join(directory, pattern)
-        json_files = glob.glob(search_path)
-        
-        # Filtrar apenas arquivos (não diretórios)
-        json_files = [f for f in json_files if os.path.isfile(f)]
-        
-        return sorted(json_files)
-    except Exception as e:
-        print(f"Erro ao buscar arquivos JSON: {e}")
-        return []
-
-
-def process_all_configs(directory='.', data_fim=None):
-    """Processa todos os arquivos .json encontrados no diretório"""
+def find_json_configs():
+    """Encontra todos os arquivos .json no diretório do script ou diretório atual"""
     
-    print("="*60)
-    print("MONITOR DE CONFIGURAÇÕES - PROCESSAMENTO EM LOTE")
-    print("="*60)
+    # Primeiro, tenta no diretório onde o script está localizado
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    print(f"Diretório do script: {script_dir}")
+    print(f"Diretório de trabalho atual: {os.getcwd()}")
+    
+    # Verificar se há arquivos JSON no diretório do script
+    script_files = os.listdir(script_dir)
+    script_json_pattern = os.path.join(script_dir, "*.json")
+    script_json_files = glob.glob(script_json_pattern)
+    
+    print(f"Arquivos no diretório do script: {script_files}")
+    print(f"Arquivos .json no diretório do script: {[os.path.basename(f) for f in script_json_files]}")
+    
+    if script_json_files:
+        print("Usando arquivos JSON do diretório do script")
+        return sorted(script_json_files)
+    
+    # Se não encontrou no diretório do script, verifica se existe pasta controle no working directory
+    controle_dir = "controle"
+    if os.path.exists(controle_dir):
+        print(f"Verificando pasta controle em: {os.path.join(os.getcwd(), controle_dir)}")
+        controle_files = os.listdir(controle_dir)
+        controle_json_pattern = os.path.join(controle_dir, "*.json")
+        controle_json_files = glob.glob(controle_json_pattern)
+        
+        print(f"Arquivos em controle/: {controle_files}")
+        print(f"Arquivos .json em controle/: {[os.path.basename(f) for f in controle_json_files]}")
+        
+        if controle_json_files:
+            print("Usando arquivos JSON da pasta controle")
+            return sorted(controle_json_files)
+    
+    # Por último, tenta no diretório atual
+    current_files = os.listdir('.')
+    current_json_files = glob.glob("*.json")
+    
+    print(f"Arquivos no diretório atual: {current_files}")
+    print(f"Arquivos .json no diretório atual: {current_json_files}")
+    
+    return sorted(current_json_files)
+
+
+def process_all_configs(data_fim=None):
+    """Processa todos os arquivos .json encontrados no diretório atual"""
+    
+    print("="*50)
+    print("MONITOR DE CONFIGURAÇÕES")
+    print("="*50)
     print(f"Diretório de trabalho: {os.getcwd()}")
-    print(f"Buscando em: {os.path.abspath(directory)}")
+    print(f"Buscando arquivos JSON em: controle/")
     
-    # Encontrar todos os arquivos .json
-    json_files = find_json_configs(directory)
+    # Encontrar todos os arquivos .json no diretório atual
+    json_files = find_json_configs()
     
     if not json_files:
-        print(f"Nenhum arquivo .json encontrado no diretório: {directory}")
-        print("Arquivos disponíveis:")
-        try:
-            files = os.listdir(directory)
-            for f in files[:10]:  # Mostrar apenas os primeiros 10
-                print(f"  - {f}")
-        except:
-            pass
+        print("Nenhum arquivo .json encontrado no diretório atual")
         return
     
-    print(f"Encontrados {len(json_files)} arquivo(s) .json:")
+    print(f"\nEncontrados {len(json_files)} arquivo(s) .json:")
     for i, file in enumerate(json_files, 1):
-        print(f"  {i}. {os.path.basename(file)}")
+        print(f"  {i}. {file}")
     
-    print("\n" + "-"*60)
+    print("\n" + "-"*50)
     
-    # Conectar ao MT5 uma vez no início
+    # Conectar ao MT5
     print("Conectando ao MT5...")
     if not connect_mt5():
         print("Erro: Não foi possível conectar ao MT5")
         return
     
     # Processar cada arquivo
-    successful_processes = 0
-    failed_processes = 0
+    sucessos = 0
+    falhas = 0
     
     for i, config_file in enumerate(json_files, 1):
-        config_name = os.path.basename(config_file)
-        
-        print(f"\n[{i}/{len(json_files)}] Processando: {config_name}")
+        print(f"\n[{i}/{len(json_files)}] Processando: {config_file}")
         print("-" * 40)
         
         try:
-            # Processar o arquivo de configuração
-            df_results = base_trades(
-                config_file=config_file,
-                data_fim=data_fim
-            )
+            df_results = base_trades(config_file=config_file, data_fim=data_fim)
             
             if not df_results.empty:
-                print(f"[OK] Sucesso: {config_name} - {len(df_results)} trades processados")
-                successful_processes += 1
+                print(f"[OK] {config_file} - {len(df_results)} trades processados")
+                sucessos += 1
             else:
-                print(f"[AVISO] Aviso: {config_name} - Nenhum trade encontrado")
-                failed_processes += 1
+                print(f"[AVISO] {config_file} - Nenhum trade encontrado")
+                falhas += 1
                 
         except Exception as e:
-            print(f"[ERRO] Erro ao processar {config_name}: {str(e)}")
-            failed_processes += 1
+            print(f"[ERRO] {config_file}: {str(e)}")
+            falhas += 1
     
-    # Resumo final
-    print("\n" + "="*60)
-    print("RESUMO DO PROCESSAMENTO")
-    print("="*60)
-    print(f"Total de arquivos processados: {len(json_files)}")
-    print(f"Sucessos: {successful_processes}")
-    print(f"Falhas/Sem dados: {failed_processes}")
-    
-    if successful_processes > 0:
-        print(f"\nArquivos .csv gerados no diretório atual")
+    # Resumo
+    print("\n" + "="*50)
+    print("RESUMO")
+    print("="*50)
+    print(f"Sucessos: {sucessos}")
+    print(f"Falhas: {falhas}")
     
     # Desconectar do MT5
     mt5.shutdown()
@@ -330,33 +346,22 @@ def process_all_configs(directory='.', data_fim=None):
 
 
 def main():
-    """Função principal do script"""
-    
+    """Função principal"""
     print("Iniciando monitor de configurações...")
-    print(f"Python executando de: {sys.executable}")
-    print(f"Diretório atual: {os.getcwd()}")
-    
-    # Parâmetros configuráveis
-    directory = '.'  # Diretório atual
-    data_fim = None  # None = usa data atual
-    
-    # Processar todas as configurações
-    process_all_configs(directory, data_fim)
+    process_all_configs()
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\nProcessamento interrompido pelo usuário")
+        print("\nProcessamento interrompido pelo usuário")
         try:
             mt5.shutdown()
         except:
             pass
     except Exception as e:
-        print(f"\nErro geral durante execução: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"Erro: {e}")
         try:
             mt5.shutdown()
         except:
