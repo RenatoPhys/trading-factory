@@ -371,7 +371,7 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
         combined_df['equity'] = 30000 + combined_df['cstrategy']  # Initial cash = 30000
         
         # Salvar CSV combinado com magic_number no nome
-        combined_csv_filename = f"{symbol}_{timeframe}_{strategy_data['strategy']}_magic_{magic_number}_combined.csv"
+        combined_csv_filename = f"backtest_{symbol}_{timeframe}_{strategy_data['strategy']}_magic_{magic_number}.csv"
         combined_csv_path = os.path.join(output_dir, combined_csv_filename)
         combined_df.to_csv(combined_csv_path)
         
@@ -389,7 +389,7 @@ def main():
     # Configurações
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))  # Diretório do script atual
     OUTPUT_DIR = os.path.join(SCRIPT_DIR, "backtest_results")  # Pasta backtest_results no mesmo diretório
-    DATA_INI = "2025-06-01"  # Data inicial do backtest
+    DATA_INI = "2025-06-17"  # Data inicial do backtest
     DATA_FIM = "2025-12-31"  # Data final do backtest
     
     # Criar diretório de saída se não existir

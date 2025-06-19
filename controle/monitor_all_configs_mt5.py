@@ -199,6 +199,7 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
     magic_number = config.get('magic_number', 2)
     cost_per_lot = config.get('cost_per_lot', 0.5)
     timeframe = config.get('timeframe', 't5')
+    strategy_name = config['strategy']
     
     print(f"Símbolo: {symbol}")
     print(f"Magic Number: {magic_number}")
@@ -223,7 +224,7 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
     if not result_df.empty:
         # Para o nome do arquivo, usar apenas WIN se for contrato WIN
         file_symbol = "WIN" if "*WIN*" in symbol else symbol.replace('*', '')
-        output_file = f"results_{file_symbol}_{magic_number}.csv"
+        output_file = f"real_results/results_{file_symbol}_{timeframe}_{strategy_name}_magic_{magic_number}.csv"
         result_df.to_csv(output_file, index=True)
         print(f"Resultados salvos em: {output_file}")
     
