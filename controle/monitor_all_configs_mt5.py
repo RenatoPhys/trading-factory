@@ -192,7 +192,8 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
     
     # SOLUÇÃO SIMPLES: Se contém WIN, usar *WIN*
     if "WIN" in symbol.upper():
-        symbol = "*WIN*"
+        symbol2 = symbol.upper()
+        symbol = "*WIN*"        
     elif not symbol.startswith('*'):
         symbol = f"*{symbol}*"
     
@@ -227,7 +228,7 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
         
         # Para o nome do arquivo, usar apenas WIN se for contrato WIN
         file_symbol = "WIN" if "*WIN*" in symbol else symbol.replace('*', '')
-        output_file = f"controle/real_results/results_{file_symbol}_{timeframe}_{strategy_name}_magic_{magic_number}.csv"
+        output_file = f"controle/real_results/results_{symbol2}_{timeframe}_{strategy_name}_magic_{magic_number}.csv"
         result_df.to_csv(output_file, index=True)
         print(f"Resultados salvos em: {output_file}")
     
