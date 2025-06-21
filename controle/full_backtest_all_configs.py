@@ -377,8 +377,8 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
         combined_df.to_csv(combined_csv_path)
         
         print(f"\nCSV combinado salvo em: {combined_csv_path}")
-        print(f"Total de trades: {(combined_df['position'] != 0).sum()}")
-        print(f"Resultado final: ${combined_df['cstrategy'].iloc[-1]:.2f}")
+        #print(f"Total de trades: {(combined_df['position'] != 0).sum()}")
+        #print(f"Resultado final: ${combined_df['cstrategy'].iloc[-1]:.2f}")
     
     else:
         print("Nenhum resultado foi gerado com sucesso.")
