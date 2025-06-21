@@ -1,0 +1,115 @@
+{
+    "symbol": "WDO@N",
+    "timeframe": "t5",
+    "strategy": "bb_trend",
+    "hours": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+    ],
+    "hour_params": {
+        "9": {
+            "bb_length": 9,
+            "std": 1.5,
+            "position_type": "long",
+            "allowed_hours": [
+                9
+            ],
+            "tp": 23.3,
+            "sl": 15.100000000000001
+        },
+        "10": {
+            "bb_length": 7,
+            "std": 1.2000000000000002,
+            "position_type": "short",
+            "allowed_hours": [
+                10
+            ],
+            "tp": 32.0,
+            "sl": 9.7
+        },
+        "11": {
+            "bb_length": 7,
+            "std": 1.7000000000000002,
+            "position_type": "both",
+            "allowed_hours": [
+                11
+            ],
+            "tp": 29.8,
+            "sl": 11.700000000000001
+        },
+        "12": {
+            "bb_length": 8,
+            "std": 1.7000000000000002,
+            "position_type": "long",
+            "allowed_hours": [
+                12
+            ],
+            "tp": 31.900000000000002,
+            "sl": 24.0
+        },
+        "13": {
+            "bb_length": 8,
+            "std": 1.2000000000000002,
+            "position_type": "long",
+            "allowed_hours": [
+                13
+            ],
+            "tp": 25.900000000000002,
+            "sl": 29.200000000000003
+        },
+        "14": {
+            "bb_length": 10,
+            "std": 1.2000000000000002,
+            "position_type": "long",
+            "allowed_hours": [
+                14
+            ],
+            "tp": 32.0,
+            "sl": 15.600000000000001
+        },
+        "15": {
+            "bb_length": 10,
+            "std": 0.8,
+            "position_type": "long",
+            "allowed_hours": [
+                15
+            ],
+            "tp": 31.3,
+            "sl": 19.5
+        },
+        "16": {
+            "bb_length": 9,
+            "std": 1.5,
+            "position_type": "long",
+            "allowed_hours": [
+                16
+            ],
+            "tp": 8.9,
+            "sl": 13.5
+        },
+        "17": {
+            "bb_length": 7,
+            "std": 1.7000000000000002,
+            "position_type": "long",
+            "allowed_hours": [
+                17
+            ],
+            "tp": 30.8,
+            "sl": 20.0
+        }
+    },
+    "tc": 1.2,
+    "lote": 1,
+    "valor_lote": 10.0,
+    "daytrade": true,
+    "magic_number": 17625,
+    "optimize_metric": "calmar_ratio",
+    "direction": "maximize"
+}

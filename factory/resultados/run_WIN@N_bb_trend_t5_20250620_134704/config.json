@@ -1,0 +1,46 @@
+{
+    "symbol": "WIN@N",
+    "timeframe": "t5",
+    "data_ini": "2019-01-01",
+    "data_fim": "2025-06-14",
+    "initial_cash": 30000,
+    "lote": 1,
+    "slippage": 0,
+    "daytrade": true,
+    "path_base": "C:/Users/User/OneDrive/Documentos/rnt/Finance/Trading Projects/00.database/candlestick data/futuros/",
+    "num_trials": 65,
+    "max_workers": 1,
+    "export_dir": "./resultados",
+    "tc": 1.0,
+    "valor_lote": 0.2,
+    "param_ranges": {
+        "tp": [
+            80,
+            1900,
+            5
+        ],
+        "sl": [
+            80,
+            1900,
+            5
+        ],
+        "bb_length": [
+            6,
+            10
+        ],
+        "std": [
+            0.8,
+            2.0,
+            0.1
+        ],
+        "position_type": [
+            "long",
+            "short",
+            "both"
+        ]
+    },
+    "fixed_params": {},
+    "strategy": "bb_trend",
+    "optimize_metric": "sharpe_ratio",
+    "direction": "maximize"
+}
