@@ -2,6 +2,42 @@
 import numpy as np
 import pandas as pd
 
+def gold_rsi_trend(df, length_rsi, rsi_low, rsi_high, allowed_hours=None, position_type="both"):
+
+    df = df.copy()  # Para evitar SettingWithCopyWarning
+    
+    
+    # Calcula o RSI
+    df['rsi'] = df.ta.rsi(length= length_rsi).fillna(0)
+    
+    # Condições de entrada
+    cond1 = (df.rsi < rsi_low) & (df.rsi.shift(+1) >= rsi_low)
+    cond2 = (df.rsi > rsi_high) & (df.rsi.shift(+1) <= rsi_high)
+    
+    # Entradas
+    df['position'] = 0
+    
+    if position_type == "short":
+        df.loc[cond1, "position"] = -1
+    elif position_type == "long":
+        df.loc[cond2, "position"] = +1
+    else:  # "both" ou qualquer outro valor padrão
+        df.loc[cond1, "position"] = -1
+        df.loc[cond2, "position"] = +1
+    
+    #Não temos posições muito cedo no dia                
+    #df.loc[(df.index.to_series().dt.hour==9) & (df.index.to_series().dt.minute <= 10), 'position'] = 0
+    
+    # Restrição de horários
+    if allowed_hours is not None:
+        # Zera posição fora dos horários permitidos
+        current_hours = df.index.to_series().dt.hour
+        df.loc[~current_hours.isin(allowed_hours), 'position'] = 0
+  
+    
+    
+    return df['position']
+
 def pattern_rsi_trend(df, length_rsi, rsi_low, rsi_high, allowed_hours=None, position_type="both"):
     """
     Estratégia de entrada baseada na variação percentual de preços e RSI inverso.
