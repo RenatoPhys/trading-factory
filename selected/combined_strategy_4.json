@@ -1,7 +1,7 @@
 {
     "symbol": "WIN@N",
     "timeframe": "t5",
-    "strategy": "god_rsi_trend",
+    "strategy": "gold_rsi_trend",
     "hours": [
         10,
         11,
