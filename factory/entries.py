@@ -212,9 +212,9 @@ def bb_anti_trend(df, bb_length, std, allowed_hours=None, position_type="both"):
     if position_type.lower() == "both":
         df.loc[cond1, "position"] = +1
         df.loc[cond2, "position"] = -1
-    elif position_type.lower() == "long":
-        df.loc[cond2, "position"] = -1
     elif position_type.lower() == "short":
+        df.loc[cond2, "position"] = -1
+    elif position_type.lower() == "long":
         df.loc[cond1, "position"] = +1
     else:
         raise ValueError("position_type deve ser 'long', 'short' ou 'both'")
