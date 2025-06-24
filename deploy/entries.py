@@ -1,6 +1,7 @@
 
 import numpy as np
 import pandas as pd
+import pandas_ta as ta
 
 def gold_rsi_trend(df, length_rsi, rsi_low, rsi_high, allowed_hours=None, position_type="both"):
 
