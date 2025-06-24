@@ -1,5 +1,5 @@
 {
-    "symbol": "WIN@N",
+    "symbol": "WINQ25",
     "timeframe": "t5",
     "strategy": "pattern_rsi_trend",
     "hours": [
