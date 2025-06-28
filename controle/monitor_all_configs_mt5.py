@@ -104,13 +104,13 @@ def trade_report(symbol, data_ini, data_fim, cost_per_lot=0.25):
 
 def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
     """Processa dados de trades separando entradas e saídas"""
-    
+
     if dfmt5.empty:
         print("DataFrame vazio - nenhum trade para processar")
         return pd.DataFrame()
     
     # Dataframe com entradas (trades com 'patt' no comentário)
-    dfmt5_ent = dfmt5[dfmt5['comment'].str.contains('patt', na=False)][
+    dfmt5_ent = dfmt5[dfmt5['magic']==magic_number][
         ['time', 'type', 'position_id', 'magic', 'price', 'volume']
     ].copy()
     
@@ -123,7 +123,7 @@ def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
     dfmt5_ent.loc[dfmt5_ent['type'] == 0, 'posi'] = 'long'
     
     # Dataframe com saídas (trades sem 'patt' no comentário)
-    dfmt5_ext = dfmt5[~dfmt5['comment'].str.contains('patt', na=False)][
+    dfmt5_ext = dfmt5[dfmt5['magic']==0][
         ['time', 'position_id', 'price', 'profit', 'comment']
     ].copy()
     
@@ -166,6 +166,7 @@ def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
     
     # Lucro acumulado
     dfmt5_2['cstrategy'] = dfmt5_2['lucro'].cumsum()
+
     
     return dfmt5_2
 
@@ -193,7 +194,10 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
     # SOLUÇÃO SIMPLES: Se contém WIN, usar *WIN*
     if "WIN" in symbol.upper():
         symbol2 = symbol.upper()
-        symbol = "*WIN*"        
+        symbol = "*WIN*"      
+    if "WDO" in symbol.upper():
+        symbol2 = symbol.upper()
+        symbol = "*WDO*"     
     elif not symbol.startswith('*'):
         symbol = f"*{symbol}*"
     

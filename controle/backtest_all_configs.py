@@ -217,6 +217,7 @@ def get_strategy_function(strategy_name):
         'pattern_rsi_anti_trend': entries.pattern_rsi_anti_trend,
         'bb_trend': entries.bb_trend,
         'bb_anti_trend': entries.bb_anti_trend,
+        'gold_rsi_trend': entries.gold_rsi_trend,
         # Adicione outras estratégias conforme necessário
     }
     
@@ -389,7 +390,7 @@ def main():
     # Configurações
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))  # Diretório do script atual
     OUTPUT_DIR = os.path.join(SCRIPT_DIR, "backtest_results")  # Pasta backtest_results no mesmo diretório
-    DATA_INI = "2025-06-17"  # Data inicial do backtest
+    DATA_INI = "2025-06-23"  # Data inicial do backtest
     DATA_FIM = "2025-12-31"  # Data final do backtest
     
     # Criar diretório de saída se não existir
