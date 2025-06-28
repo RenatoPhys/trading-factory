@@ -180,7 +180,7 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
         return pd.DataFrame()
     
     # Extrair parâmetros de data do config
-    data_ini = config.get('data_ini', '2025-06-01')
+    data_ini = config.get('data_ini', '2025-06-25')
     
     # Usar data fim fornecida, do config ou data atual
     if data_fim is None:
