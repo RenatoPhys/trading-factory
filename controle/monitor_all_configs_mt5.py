@@ -84,7 +84,7 @@ def get_timeframe_offset(timeframe):
     return timeframe_map.get(timeframe.lower(), 5)
 
 
-def trade_report(symbol, data_ini, data_fim, cost_per_lot=0.25):
+def trade_report(symbol, data_ini, data_fim, cost_per_lot):
     """Extrai relatório de trades do MT5"""
     deals = mt5.history_deals_get(data_ini, data_fim, group=symbol)
     
@@ -102,7 +102,7 @@ def trade_report(symbol, data_ini, data_fim, cost_per_lot=0.25):
     return df
 
 
-def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
+def process_trades_data(dfmt5, magic_number, cost_per_lot, timeframe='t5'):
     """Processa dados de trades separando entradas e saídas"""
 
     if dfmt5.empty:
@@ -197,7 +197,7 @@ def base_trades(config_file, data_fim=None, symbol_override=None):
         symbol = f"*{symbol}*"
     
     magic_number = config.get('magic_number', 2)
-    cost_per_lot = config.get('cost_per_lot', 0.5)
+    cost_per_lot = config.get('tc', 0.5)
     timeframe = config.get('timeframe', 't5')
     strategy_name = config['strategy']
     
