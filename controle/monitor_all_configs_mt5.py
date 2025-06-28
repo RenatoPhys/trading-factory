@@ -109,10 +109,9 @@ def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
         print("DataFrame vazio - nenhum trade para processar")
         return pd.DataFrame()
     
-    # Dataframe com entradas (trades com 'patt' no comentário)
-    dfmt5_ent = dfmt5[dfmt5['magic']==magic_number][
-        ['time', 'type', 'position_id', 'magic', 'price', 'volume']
-    ].copy()
+    # Dataframe com entradas (trades com magic number correto)
+    filtro_ent = (dfmt5['magic']==magic_number) & (dfmt5['reason']==3)
+    dfmt5_ent = dfmt5[filtro_ent][['time', 'type', 'position_id', 'magic', 'price', 'volume']].copy()
     
     if dfmt5_ent.empty:
         print("Nenhuma entrada encontrada com padrão 'patt'")
@@ -122,10 +121,9 @@ def process_trades_data(dfmt5, magic_number, cost_per_lot=0.5, timeframe='t5'):
     dfmt5_ent.loc[dfmt5_ent['type'] == 1, 'posi'] = 'short'
     dfmt5_ent.loc[dfmt5_ent['type'] == 0, 'posi'] = 'long'
     
-    # Dataframe com saídas (trades sem 'patt' no comentário)
-    dfmt5_ext = dfmt5[dfmt5['magic']==0][
-        ['time', 'position_id', 'price', 'profit', 'comment']
-    ].copy()
+    # Dataframe com saídas
+    filtro_ext = (dfmt5['magic']==0) | (dfmt5['reason']==4)
+    dfmt5_ext = dfmt5[filtro_ext][['time', 'position_id', 'price', 'profit', 'comment']].copy()
     
     if dfmt5_ext.empty:
         print("Nenhuma saída encontrada")
