@@ -1,0 +1,102 @@
+[
+    {
+        "hour": 10,
+        "params": {
+            "length_rsi": 7.0,
+            "rsi_low": 44.0,
+            "rsi_high": 68.0,
+            "position_type": "long",
+            "allowed_hours": [
+                10
+            ],
+            "tp": 31.3,
+            "sl": 16.3
+        },
+        "metrics": {
+            "sortino_ratio": 4.228231589657806,
+            "sharpe_ratio": 1.5368441463866773,
+            "calmar_ratio": 1.5510718278968179,
+            "profit_factor": 1.2331063513680822,
+            "win_rate": 0.46413849958779885,
+            "max_drawdown": 0.07643930540307634,
+            "total_return": 10590.75,
+            "total_trades": 1213,
+            "annual_return": 11.856285315471272
+        }
+    },
+    {
+        "hour": 11,
+        "params": {
+            "length_rsi": 9.0,
+            "rsi_low": 26.0,
+            "rsi_high": 67.0,
+            "position_type": "long",
+            "allowed_hours": [
+                11
+            ],
+            "tp": 33.900000000000006,
+            "sl": 7.9
+        },
+        "metrics": {
+            "sortino_ratio": 3.80924660320155,
+            "sharpe_ratio": 1.0692948624758203,
+            "calmar_ratio": 1.3538264669910272,
+            "profit_factor": 1.1784627883252785,
+            "win_rate": 0.3117370892018779,
+            "max_drawdown": 0.05231860185934839,
+            "total_return": 4832.75,
+            "total_trades": 1065,
+            "annual_return": 7.083030791315181
+        }
+    },
+    {
+        "hour": 12,
+        "params": {
+            "length_rsi": 10.0,
+            "rsi_low": 39.0,
+            "rsi_high": 63.0,
+            "position_type": "long",
+            "allowed_hours": [
+                12
+            ],
+            "tp": 17.5,
+            "sl": 27.6
+        },
+        "metrics": {
+            "sortino_ratio": 2.7488348586588747,
+            "sharpe_ratio": 1.912622225917264,
+            "calmar_ratio": 2.9591518385906848,
+            "profit_factor": 1.3083917388595345,
+            "win_rate": 0.6459369817578773,
+            "max_drawdown": 0.049468663926300734,
+            "total_return": 10950.875,
+            "total_trades": 1206,
+            "annual_return": 14.638528781013749
+        }
+    },
+    {
+        "hour": 13,
+        "params": {
+            "length_rsi": 7.0,
+            "rsi_low": 44.0,
+            "rsi_high": 63.0,
+            "position_type": "long",
+            "allowed_hours": [
+                13
+            ],
+            "tp": 36.0,
+            "sl": 8.600000000000001
+        },
+        "metrics": {
+            "sortino_ratio": 3.4676611166042983,
+            "sharpe_ratio": 1.0903595018783154,
+            "calmar_ratio": 1.3660658022825043,
+            "profit_factor": 1.197959718982837,
+            "win_rate": 0.4018146467919637,
+            "max_drawdown": 0.05330857636776899,
+            "total_return": 6981.0,
+            "total_trades": 1543,
+            "annual_return": 7.28230231443745
+        }
+    }
+]

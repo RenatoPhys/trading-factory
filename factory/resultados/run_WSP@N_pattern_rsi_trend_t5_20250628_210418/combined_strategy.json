@@ -1,0 +1,64 @@
+{
+    "symbol": "WSP@N",
+    "timeframe": "t5",
+    "strategy": "pattern_rsi_trend",
+    "hours": [
+        10,
+        11,
+        12,
+        13
+    ],
+    "hour_params": {
+        "10": {
+            "length_rsi": 7.0,
+            "rsi_low": 44.0,
+            "rsi_high": 68.0,
+            "position_type": "long",
+            "allowed_hours": [
+                10
+            ],
+            "tp": 31.3,
+            "sl": 16.3
+        },
+        "11": {
+            "length_rsi": 9.0,
+            "rsi_low": 26.0,
+            "rsi_high": 67.0,
+            "position_type": "long",
+            "allowed_hours": [
+                11
+            ],
+            "tp": 33.900000000000006,
+            "sl": 7.9
+        },
+        "12": {
+            "length_rsi": 10.0,
+            "rsi_low": 39.0,
+            "rsi_high": 63.0,
+            "position_type": "long",
+            "allowed_hours": [
+                12
+            ],
+            "tp": 17.5,
+            "sl": 27.6
+        },
+        "13": {
+            "length_rsi": 7.0,
+            "rsi_low": 44.0,
+            "rsi_high": 63.0,
+            "position_type": "long",
+            "allowed_hours": [
+                13
+            ],
+            "tp": 36.0,
+            "sl": 8.600000000000001
+        }
+    },
+    "tc": 1.0,
+    "lote": 1,
+    "valor_lote": 2.5,
+    "daytrade": true,
+    "magic_number": 1387,
+    "optimize_metric": "sharpe_ratio",
+    "direction": "maximize"
+}
