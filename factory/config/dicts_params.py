@@ -53,7 +53,7 @@ dict_custos = {'WIN@N':0.2*5, 'WDO@N':2.40/2, 'WSP@N':0.2*5, 'BIT@N':0.2*5,
                                      'NAT.GAS': 3,
                                      'BRENT': 3}
 
-dict_valor_lot = {'WIN@N':0.2, 'WDO@N':10.0, 'WSP@N':2.5, 'BIT@N':1.0,
+dict_valor_lot = {'WIN@N':0.2, 'WDO@N':10.0, 'WSP@N':2.5, 'BIT@N':0.01,
                                 'USDCAD': 100000,
                                  'AUDUSD': 100000,
                                  'EURUSD': 100000,

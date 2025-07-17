@@ -1,5 +1,5 @@
 {
-    "symbol": "WDON25",
+    "symbol": "WDOQ25",
     "timeframe": "t5",
     "strategy": "gold_rsi_trend",
     "hours": [
