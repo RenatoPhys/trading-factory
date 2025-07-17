@@ -295,6 +295,8 @@ def process_combined_strategy(json_path, data_ini, data_fim, output_dir):
     # Extrair informações básicas
     if 'WIN' in strategy_data['symbol']:
         symbol = 'WIN@N'
+    elif 'WDO' in strategy_data['symbol']:
+        symbol = 'WDO@N'
     else:
         symbol = strategy_data['symbol']
     timeframe = strategy_data['timeframe']
